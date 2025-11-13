@@ -1,0 +1,63 @@
+{% extends 'index.html' %}
+{% block contenido %}
+
+{% if messages %}
+    
+    {% for msj in messages %}
+        <script>
+            Swal.fire('{{ msj }}','','success').then(()=>{
+                window.location.href = '{{ ruta }}'
+            })
+        </script>
+    {% endfor %}
+        
+{% endif %}
+
+<h2 class="alert alert-dark text-center mt-3">{{ titulo }}</h2>
+<div class="mt-3 text-end mb-3">
+    <a href="{% url 'crearjuego' %}" class="btn btn-success">Añadir juegos</a>
+</div>
+    {% if juego %}
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <th>Portada</th>
+            <th>Título</th>
+            <th>Fecha Lanzamiento</th>
+            <th>Precio</th>
+            <th>Plataforma</th>
+            <th>Desarrolladora</th>
+            <th>Editora</th>
+            <th>ESRB</th>
+            <th>Género</th>
+            <th></th>
+            </tr>
+        </thead>
+        <tbody>        
+            {% for j in juego %}
+                <tr>
+                    <td>{{ j.titulo }}</td>
+                    <td>{{ j.fecha_lanzamiento }}</td>
+                    <td>${{ j.precio }}</td>
+                    <td>{{ j.plataforma }}</td>
+                    <td>{{ j.desarrolladora }}</td>
+                    <td>{{ j.editora }}</td>
+                    <td>{{ j.esrb }}</td>
+                    <td>{{ j.genero }}</td>
+                    <td>
+                        {% if j.portada %}
+                        <img src="/media/{{ j.portada }}" alt="{{ j.portada}}" width="150px">
+                        {% endif %}
+                    </td>
+                    <td class="col-2 text-center">
+                        <a href="{% url 'editar_titulo' j.id %}" class="btn btn-warning">Editar</a>
+                        <button class="btn btn-danger">Eliminar</button>
+                    </td>
+                </tr>
+            {% endfor %}            
+        </tbody>
+    </table>
+    {% else %}
+    <p class="alert alert-warning">No hay clasificacion registrada</p>
+    {% endif %}
+    <a href="{% url 'inicio' %}" class="btn btn-outline-dark">Volver</a>
+{% endblock %}
