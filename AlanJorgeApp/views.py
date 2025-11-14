@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
-from AlanJorgeApp.forms import ESRBForm,DesarrolladoraForm, EditoraForm,GeneroForm,PlataformaForm,TituloForm,ResenasForm
-from AlanJorgeApp.models import Esrb_model,Desarrolladora_model, Editora_model,Genero_model,Plataforma_model,Titulo_model,Resena_model, TituloFiltro
+from AlanJorgeApp.forms import ESRBForm,DesarrolladoraForm, EditoraForm,GeneroForm,PlataformaForm,TituloForm,ResenasForm, TituloFiltro
+from AlanJorgeApp.models import Esrb_model,Desarrolladora_model, Editora_model,Genero_model,Plataforma_model,Titulo_model,Resena_model
 from django.contrib import messages
 from django.core.files.storage import FileSystemStorage
 import xlwt 
@@ -335,7 +335,7 @@ def editarResena(request, id_resena):
             messages.success(request, 'Reseña actualizada con éxito!')
     return render(request, 'src/edit.html', data)
 
-def exportarExcel(request, esrb, desarrolladora, editora, genero, plataforma, resenas):
+def exportarExcel(request, esrb, desarrolladora, editora, genero, plataforma, resenas,texto):
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename=juegos.xls'
     archivo = xlwt.Workbook(encoding='utf-8')
@@ -344,10 +344,33 @@ def exportarExcel(request, esrb, desarrolladora, editora, genero, plataforma, re
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
 
-    columnas = ['esrb','desarrolladora','editora','genero','plataforma','resenas']
+    columnas = ['Titulo','Fecha de lanzamiento','Precio','Genero','Etiquetas','Plataforma', 'Desarrolladora', 'Editora','ESRB']
     for i in range(len(columnas)):
         hoja.write(row_num,i,columnas[i],font_style)
 
     font_style = xlwt.XFStyle()
 
-    filas = Producto.objects.all().values_list('codigo','nombre','marca__nombre','categoria__nombre','precio','stock','descripcion')
+    filas = Titulo_model.objects.all().values_list('titulo','fecha_lanzamiento','precio','descripcion','etiquetas','plataforma','desarrolladora','editora','genero')
+    
+    if texto != '0':
+        filas = filas.filter(titulo__icontains=texto)
+    if esrb != 0:
+        filas = filas.filter(esrb__id=esrb)
+    if desarrolladora != 0:
+        filas = filas.filter(desarrolladora__id=desarrolladora)
+    if editora != 0:
+        filas = filas.filter(editora__id=editora)
+    if genero != 0:
+        filas = filas.filter(genero__id=genero)
+    if plataforma != 0:
+        filas = filas.filter(plataforma__id=plataforma)
+    if resenas != 0:
+        filas = filas.filter(resenas__id=resenas)
+    
+    for f in filas:
+        row_num += 1
+        for col_num in range (len(f)):
+            hoja.write(row_num,col_num, str(f[col_num]), font_style)
+    archivo.save(response)
+    return response
+    

@@ -157,10 +157,10 @@ class ResenasForm(forms.ModelForm):
 # Cada clase de filtro tiene que ir para cada categoria que tenemos creada
 class TituloFiltro(forms.Form):
     # Filtro para el texto
-    texto = forms.ModelChoiceField(required=False,
+    texto = forms.CharField(required=False,
                                     widget= forms.TextInput(attrs={'class':'form-control'}))
     #filtro por items
-    esrb = forms.ModelChoiceField(queryset=Esrb_model.objects.all().order_by('Clasificacion'),
+    esrb = forms.ModelChoiceField(queryset=Esrb_model.objects.all().order_by('clasificacion'),
                                     empty_label='Todas las clasificaciones', required=False, 
                                     widget=forms.Select(attrs={'class':'form-select'}))
     desarrolladora = forms.ModelChoiceField(queryset=Desarrolladora_model.objects.all().order_by('nombre'),
@@ -179,23 +179,26 @@ class TituloFiltro(forms.Form):
                                     empty_label='Todas las reseñas', required=False, 
                                     widget=forms.Select(attrs={'class':'form-select'}))
 
-class EsrbFiltro(forms.Form):
-    texto = forms.ModelChoiceField(required=False,
-                                    widget= forms.TextInput(attrs={'class':'form-control'}))
-    desarrolladora = forms.ModelChoiceField(queryset=Desarrolladora_model.objects.all().order_by('nombre'),
-                                    empty_label='Todas las desarrolladoras', required=False, 
-                                    widget=forms.Select(attrs={'class':'form-select'}))
-    editora = forms.ModelChoiceField(queryset=Editora_model.objects.all().order_by('nombre'),
-                                    empty_label='Todas las editoras', required=False, 
-                                    widget=forms.Select(attrs={'class':'form-select'}))
-    genero = forms.ModelChoiceField(queryset=Genero_model.objects.all().order_by('genero'),
-                                    empty_label='Todos los generos', required=False, 
-                                    widget=forms.Select(attrs={'class':'form-select'}))
-    plataforma = forms.ModelChoiceField(queryset=Plataforma_model.objects.all().order_by('nombre'),
-                                    empty_label='Todas las plataformas', required=False, 
-                                    widget=forms.Select(attrs={'class':'form-select'}))
-    resenas = forms.ModelChoiceField(queryset=Resena_model.objects.all().order_by('fuente'),
-                                    empty_label='Todas las reseñas', required=False, 
-                                    widget=forms.Select(attrs={'class':'form-select'}))
-    titulo = forms.ModelChoiceField(queryset=Titulo_model.objects.all().order_by('titulo'),
-                                    empty_label='Todos los titulos')
+
+#Segun se entiende se puede utilizar solo un filtro para hacer todas las funciones de esta pagina de momento
+
+# class EsrbFiltro(forms.Form):
+#     texto = forms.ModelChoiceField(required=False,
+#                                     widget= forms.TextInput(attrs={'class':'form-control'}))
+#     desarrolladora = forms.ModelChoiceField(queryset=Desarrolladora_model.objects.all().order_by('nombre'),
+#                                     empty_label='Todas las desarrolladoras', required=False, 
+#                                     widget=forms.Select(attrs={'class':'form-select'}))
+#     editora = forms.ModelChoiceField(queryset=Editora_model.objects.all().order_by('nombre'),
+#                                     empty_label='Todas las editoras', required=False, 
+#                                     widget=forms.Select(attrs={'class':'form-select'}))
+#     genero = forms.ModelChoiceField(queryset=Genero_model.objects.all().order_by('genero'),
+#                                     empty_label='Todos los generos', required=False, 
+#                                     widget=forms.Select(attrs={'class':'form-select'}))
+#     plataforma = forms.ModelChoiceField(queryset=Plataforma_model.objects.all().order_by('nombre'),
+#                                     empty_label='Todas las plataformas', required=False, 
+#                                     widget=forms.Select(attrs={'class':'form-select'}))
+#     resenas = forms.ModelChoiceField(queryset=Resena_model.objects.all().order_by('fuente'),
+#                                     empty_label='Todas las reseñas', required=False, 
+#                                     widget=forms.Select(attrs={'class':'form-select'}))
+#     titulo = forms.ModelChoiceField(queryset=Titulo_model.objects.all().order_by('titulo'),
+#                                     empty_label='Todos los titulos')

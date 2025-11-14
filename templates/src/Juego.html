@@ -17,7 +17,13 @@
 <div class="mt-3 text-end mb-3">
     <a href="{% url 'crearjuego' %}" class="btn btn-success">Añadir juegos</a>
 </div>
+
     {% if juego %}
+    <div class="mt-3 mb-3">
+        <button onclick="exportar()" class="btn btn-outline-success">
+        <i class="bi bi-file-earmark-excel-fill"></i>Exportar a excel</button>
+    </div>
+<div class="table-responsive">
     <table class="table table-bordered table-hover">
         <thead class="table-dark">
             <th>Portada</th>
@@ -56,6 +62,21 @@
             {% endfor %}            
         </tbody>
     </table>
+</div>
+<script>
+    const exportar = () => {
+        const texto = document.getElementById('id_texto').value || '0'
+        const esrb = document.getElementById('id_esrb').value || 0
+        const desarrolladora = document.getElementById('id_desarrolladora').value || 0
+        const editora = document.getElementById('id_editora').value || 0
+        const genero = document.getElementById('id_genero').value || 0
+        const plataforma = document.getElementById('id_plataforma').value || 0
+        const resena = document.getElementById('id_resena').value || 0
+        open(`/src/juegosexcel/${texto}/${esrb}/${desarrolladora}/${editora}/${genero}/${plataforma}/${resena}`,'_self')
+
+    }
+</script>
+
     {% else %}
     <p class="alert alert-warning">No hay clasificacion registrada</p>
     {% endif %}

@@ -1,5 +1,5 @@
 from django.urls import path
-from AlanJorgeApp.views import ESRB,crearESRB,Desarrolladora,crearDesarrolladora,Editora,crearEditora,Genero,crearGenero,Plataforma,crearPlataforma,Titulo_juego,crearTitulo, editarDesarrolladora, editarEditora, editarEsrb, editarGenero, editarPlataforma, editarResena, editarTitulo,resenas,crearResenas,eliminarTitulo,eliminarDesarrolladora,eliminarEditora,eliminarEsrb,eliminarGenero,eliminarPlataforma,eliminarResena
+from AlanJorgeApp.views import ESRB,crearESRB,Desarrolladora,crearDesarrolladora,Editora,crearEditora,Genero,crearGenero,Plataforma,crearPlataforma,Titulo_juego,crearTitulo, editarDesarrolladora, editarEditora, editarEsrb, editarGenero, editarPlataforma, editarResena, editarTitulo,resenas,crearResenas,eliminarTitulo,eliminarDesarrolladora,eliminarEditora,eliminarEsrb,eliminarGenero,eliminarPlataforma,eliminarResena,exportarExcel
 urlpatterns = [
     # ESRB
     path('esrb/',ESRB,name='esrb'),
@@ -41,6 +41,7 @@ urlpatterns = [
     path('resenas/',resenas, name='resenas'),
     path('cresenas/',crearResenas, name='crearresenas'),
     path('resenas/editar/<int:id_resena>/', editarResena, name='editar_resena'),
-    path('resenas/eliminar/<int:id_resena>/', eliminarResena, name='eliminar_resena')
-
+    path('resenas/eliminar/<int:id_resena>/', eliminarResena, name='eliminar_resena'),
+    # exportar titulo
+    path('juegosexcel/<str:texto>/<int:esrb>/<int:desarrolladora>/<int:editora>/<int:genero>/<int:plataforma>/<int:resenas>', exportarExcel)
 ]
