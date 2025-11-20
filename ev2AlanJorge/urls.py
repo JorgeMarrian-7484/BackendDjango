@@ -9,5 +9,8 @@ urlpatterns = [
     # Inicio de la pagina web
     path('', inicio, name='inicio'),
     # Pagina principal de la aplicacion. Tienda es el nombre para referirse a la app
-    path('src/',include('AlanJorgeApp.urls'))
+    path('src/',include('AlanJorgeApp.urls')),
+    path('accounts/',include('django.contrib.auth.urls'))
 ] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+
+    

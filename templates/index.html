@@ -21,21 +21,39 @@
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         <a class="nav-link active" aria-current="page" href="{% url 'inicio' %}">Home</a>
-        <a class="nav-link" href="{% url 'esrb' %}">ESRB</a>
-        <a class="nav-link" href="{% url 'desarrolladora' %}">Desarrolladoras</a>
-        <a class="nav-link" href="{% url 'editora' %}">Editoras</a>
-        <a class="nav-link" href="{% url 'genero' %}">Géneros</a>
-        <a class="nav-link" href="{% url 'plataforma' %}">Plataformas</a>
-        <a class="nav-link" href="{% url 'titulojuego' %}">Juegos</a>
-        <a class="nav-link" href="{% url 'resenas' %}">Reseñas</a>
+        <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll">
+          <li class="nav-item">
+              <a class="nav-link" href="{% url 'esrb' %}">ESRB</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="{% url 'desarrolladora' %}">Desarrolladoras</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="{% url 'editora' %}">Editoras</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="{% url 'genero' %}">Géneros</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'plataforma' %}">Plataformas</a>
+          </li>
+          <li>
+            <a class="nav-link" href="{% url 'titulojuego' %}">Juegos</a>
+          </li>
+          <li>
+            <a class="nav-link" href="{% url 'resenas' %}">Reseñas</a>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
 </nav>
 
+<div class="container">
+  {% block contenido %}
+  {% endblock contenido %}
+</div>
 
-{% block contenido %}
-{% endblock contenido %}
     
 </body>
 </html>

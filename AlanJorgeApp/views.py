@@ -55,6 +55,22 @@ def Plataforma(request):
 
 def Titulo_juego(request):
      juego = Titulo_model.objects.all()
+     form = TituloFiltro()
+     if request.method == 'POST':
+         form = TituloFiltro(request.POST)
+         texto = request.POST.get('texto')
+         esrb = request.POST.get('esrb')
+         desarrolladora = request.POST.get('desarrolladora')
+         editora = request.POST.get('editora')
+         genero = request.POST.get('genero')
+         plataforma = request.POST.get('plataforma')
+         resenas = request.POST.get('resenas')
+         if texto != '':
+            juego = juego.filter(titulo__icontains=texto)
+         if esrb != '':
+            juego = juego.filter(esrb__id = esrb)
+         if desarrolladora != '':
+            juego = juego.filter()
      data = {
           'titulo':'Juegos',
           'juego':juego

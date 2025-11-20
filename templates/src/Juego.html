@@ -18,6 +18,29 @@
     <a href="{% url 'crearjuego' %}" class="btn btn-success">Añadir juegos</a>
 </div>
 
+<form method="post">
+    {% csrf_token %}
+    <div class="input-group mt-3 mb-3">
+        <label class="input-group-text">texto</label>
+        {{ form.texto }}
+        <label class="input-group-text">esrb</label>
+        {{form.esrb}}
+        <label class="input-group-text">desarrolladora</label>
+        {{form.desarrolladora}}
+        <label class="input-group-text">editora</label>
+        {{form.editora}}
+        <label class="input-group-text">genero</label>
+        {{form.genero}}
+        <label class="input-group-text">plataforma</label>
+        {{form.plataforma}}
+        <label class="input-group-text">reseñas</label>
+        {{form.resenas}}
+        <input type="submit" value="Buscar" class="btn btn-outline-success">
+    </div>
+</form>
+
+
+
     {% if juego %}
     <div class="mt-3 mb-3">
         <button onclick="exportar()" class="btn btn-outline-success">
