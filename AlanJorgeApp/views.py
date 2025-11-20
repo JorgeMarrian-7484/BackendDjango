@@ -68,12 +68,22 @@ def Titulo_juego(request):
          if texto != '':
             juego = juego.filter(titulo__icontains=texto)
          if esrb != '':
-            juego = juego.filter(esrb__id = esrb)
+            juego = juego.filter(esrb = esrb)
          if desarrolladora != '':
-            juego = juego.filter()
+            juego = juego.filter(desarrolladora=desarrolladora)
+         if editora != '':
+            juego = juego.filter(editora=editora)
+         if genero != '':
+            juego = juego.filter(genero=genero)
+         if plataforma != '':
+            juego = juego.filter(plataforma=plataforma)
+         if resenas != '':
+            juego = juego.filter(resenas=resenas)
+        
      data = {
           'titulo':'Juegos',
-          'juego':juego
+          'juego':juego,
+          'form': form
      }
      return render(request,'src/Juego.html',data)
 
@@ -246,8 +256,8 @@ def eliminarResena(request, id_resena):
 
 #EDITAR
 
-def editarEsrb(request, id_esrb):
-    esrb = Esrb_model.objects.get(pk=id_esrb)
+def editarEsrb(request, id):
+    esrb = Esrb_model.objects.get(pk=id)
     form = ESRBForm(instance=esrb)
     data = {
         'titulo': 'Editar Clasificación ESRB',
@@ -261,8 +271,8 @@ def editarEsrb(request, id_esrb):
             messages.success(request, 'ESRB actualizado con éxito!')
     return render(request, 'src/edit.html', data)
 
-def editarDesarrolladora(request, id_desarrolladora):
-    dev = Desarrolladora_model.objects.get(pk=id_desarrolladora)
+def editarDesarrolladora(request, id):
+    dev = Desarrolladora_model.objects.get(pk=id)
     form = DesarrolladoraForm(instance=dev)
     data = {
         'titulo': 'Editar Desarrolladora',
@@ -276,8 +286,8 @@ def editarDesarrolladora(request, id_desarrolladora):
             messages.success(request, 'Desarrolladora actualizada con éxito!')
     return render(request, 'src/edit.html', data)
 
-def editarEditora(request, id_editoria):
-    editora = Editora_model.objects.get(pk=id_editoria)
+def editarEditora(request, id):
+    editora = Editora_model.objects.get(pk=id)
     form = EditoraForm(instance=editora)
     data = {
         'titulo': 'Editar Editora',
@@ -291,8 +301,8 @@ def editarEditora(request, id_editoria):
             messages.success(request, 'Editora actualizada con éxito!')
     return render(request, 'src/edit.html', data)
 
-def editarGenero(request, id_genero):
-    genero = Genero_model.objects.get(pk=id_genero)
+def editarGenero(request, id):
+    genero = Genero_model.objects.get(pk=id)
     form = GeneroForm(instance=genero)
     data = {
         'titulo': 'Editar Género',
@@ -306,8 +316,8 @@ def editarGenero(request, id_genero):
             messages.success(request, 'Género actualizado con éxito!')
     return render(request, 'src/edit.html', data)
 
-def editarPlataforma(request, id_plataforma):
-    plataforma = Plataforma_model.objects.get(pk=id_plataforma)
+def editarPlataforma(request, id):
+    plataforma = Plataforma_model.objects.get(pk=id)
     form = PlataformaForm(instance=plataforma)
     data = {
         'titulo': 'Editar Plataforma',
@@ -336,8 +346,8 @@ def editarTitulo(request, id):
             messages.success(request, 'Título actualizado con éxito!')
     return render(request, 'src/edit.html', data)
 
-def editarResena(request, id_resena):
-    resena = Resena_model.objects.get(pk=id_resena)
+def editarResena(request, id):
+    resena = Resena_model.objects.get(pk=id)
     form = ResenasForm(instance=resena)
     data = {
         'titulo': 'Editar Reseña',
@@ -360,28 +370,28 @@ def exportarExcel(request, esrb, desarrolladora, editora, genero, plataforma, re
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
 
-    columnas = ['Titulo','Fecha de lanzamiento','Precio','Genero','Etiquetas','Plataforma', 'Desarrolladora', 'Editora','ESRB']
+    columnas = ['Titulo','Fecha de lanzamiento','Precio','Genero','Plataforma', 'Desarrolladora', 'Editora','ESRB']
     for i in range(len(columnas)):
         hoja.write(row_num,i,columnas[i],font_style)
 
     font_style = xlwt.XFStyle()
 
-    filas = Titulo_model.objects.all().values_list('titulo','fecha_lanzamiento','precio','descripcion','etiquetas','plataforma','desarrolladora','editora','genero')
+    filas = Titulo_model.objects.all().values_list('titulo','fecha_lanzamiento','precio','genero__genero','plataforma__nombre','desarrolladora__nombre','editora__nombre','esrb__clasificacion')
     
     if texto != '0':
         filas = filas.filter(titulo__icontains=texto)
     if esrb != 0:
-        filas = filas.filter(esrb__id=esrb)
+        filas = filas.filter(esrb=esrb)
     if desarrolladora != 0:
-        filas = filas.filter(desarrolladora__id=desarrolladora)
+        filas = filas.filter(desarrolladora=desarrolladora)
     if editora != 0:
-        filas = filas.filter(editora__id=editora)
+        filas = filas.filter(editora=editora)
     if genero != 0:
-        filas = filas.filter(genero__id=genero)
+        filas = filas.filter(genero=genero)
     if plataforma != 0:
-        filas = filas.filter(plataforma__id=plataforma)
+        filas = filas.filter(plataforma=plataforma)
     if resenas != 0:
-        filas = filas.filter(resenas__id=resenas)
+        filas = filas.filter(resenas=resenas)
     
     for f in filas:
         row_num += 1

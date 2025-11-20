@@ -2,7 +2,6 @@ from django.db import models
 
 # Create your models here.
 class Esrb_model(models.Model):
-    id_esrb = models.IntegerField(primary_key=True)
     clasificacion = models.CharField(max_length=50)
     logo= models.ImageField()
     def __str__(self):
@@ -11,7 +10,6 @@ class Esrb_model(models.Model):
         db_table = 'esrb'
 
 class Desarrolladora_model(models.Model):
-    id_desarrolladora = models.IntegerField(primary_key=True)
     pais = models.CharField(max_length=50)
     nombre = models.CharField(max_length=50)
     descripcion = models.TextField()
@@ -22,7 +20,6 @@ class Desarrolladora_model(models.Model):
         db_table = 'desarrolladora'
 
 class Editora_model(models.Model):
-    id_editoria = models.IntegerField(primary_key=True)
     pais = models.CharField(max_length=50)
     nombre = models.CharField(max_length=50)
     descripcion = models.TextField()
@@ -33,7 +30,6 @@ class Editora_model(models.Model):
         db_table = 'editora'
 
 class Genero_model(models.Model):
-    id_genero = models.IntegerField(primary_key=True)
     genero = models.CharField(max_length=50)
     def __str__(self):
         return self.genero
@@ -41,7 +37,6 @@ class Genero_model(models.Model):
         db_table = 'genero'
 
 class Plataforma_model(models.Model):
-    id_plataforma = models.IntegerField(primary_key=True)
     director = models.CharField(max_length=50)
     nombre = models.CharField(max_length=50)
     descripcion = models.TextField()
@@ -69,7 +64,6 @@ class Titulo_model(models.Model):
         db_table = 'juego'
 
 class Resena_model(models.Model):
-    id_resena = models.IntegerField(primary_key=True)
     fuente = models.CharField(max_length=50)
     puntuacion = models.IntegerField()
     fecha_resena = models.DateField()

@@ -7,7 +7,7 @@ class ESRBForm(forms.ModelForm):
         model = Esrb_model
         fields = '__all__'
         widgets = {
-            'Clasificacion': forms.TextInput(attrs={
+            'clasificacion': forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Ej: M (Mature), T (Teen), E (Everyone)'
             }),
@@ -82,7 +82,7 @@ class PlataformaForm(forms.ModelForm):
                 'placeholder': 'Ej: PlayStation 5, PC, Nintendo Switch...'
             }),
             'logo': forms.FileInput(attrs={'class': 'form-select'}),
-            'descripción': forms.Textarea(attrs={
+            'descripcion': forms.Textarea(attrs={
                 'class': 'form-select',
                 'rows': 3,
                 'placeholder': 'Describe brevemente la plataforma'

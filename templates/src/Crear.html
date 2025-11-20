@@ -2,7 +2,6 @@
 {% load static %}
 {% block contenido %}
     <h1 class="alert alert-secondary text-center mt-3">{{ titulo }}</h1>
-    <h2>hola de nuevo esto es contenido {{titulo}}</h2>
     <form method="post"  enctype="multipart/form-data">
         <!-- csrf token permite que los datos sólo sean enviados por áca  -->
         {% csrf_token %}
