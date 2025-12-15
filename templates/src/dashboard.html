@@ -1,0 +1,124 @@
+{% extends 'index.html' %}
+
+{% block contenido %}
+
+<div class="container-fluid">
+    <h1 class="mb-4">📊 Dashboard de Juegos</h1>
+    
+    <!-- Tarjetas de Métricas -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <h4>{{ total_juegos }}</h4>
+                    <p>Total de Juegos</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-success">
+                <div class="card-body">
+                    <h4>${{ precio_promedio }}</h4>
+                    <p>Precio Promedio</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-warning">
+                <div class="card-body">
+                    <h4>${{ precio_maximo }}</h4>
+                    <p>Precio Más Alto</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-info">
+                <div class="card-body">
+                    <h4>{{ juegos_por_genero.count }}</h4>
+                    <p>Géneros Diferentes</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráficos y Tablas -->
+    <div class="row">
+        <!-- Juegos por Plataforma -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>🎮 Juegos por Plataforma</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        {% for plataforma in juegos_por_plataforma %}
+                        <li class="list-group-item d-flex justify-content-between">
+                            {{ plataforma.nombre }}
+                            <span class="badge bg-primary">{{ plataforma.total_juegos }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Juegos por Género -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>🎭 Juegos por Género</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        {% for genero in juegos_por_genero %}
+                        <li class="list-group-item d-flex justify-content-between">
+                            {{ genero.genero }}
+                            <span class="badge bg-success">{{ genero.total }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Últimos Juegos -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>🆕 Últimos Juegos Agregados</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Título</th>
+                                    <th>Plataforma</th>
+                                    <th>Género</th>
+                                    <th>Precio</th>
+                                    <th>Fecha Lanzamiento</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for juego in ultimos_juegos %}
+                                <tr>
+                                    <td>{{ juego.titulo }}</td>
+                                    <td>{{ juego.plataforma.nombre }}</td>
+                                    <td>{{ juego.genero.genero }}</td>
+                                    <td>${{ juego.precio }}</td>
+                                    <td>{{ juego.fecha_lanzamiento }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
+{% endblock contenido %}
+    

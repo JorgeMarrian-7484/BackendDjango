@@ -72,3 +72,4 @@ class Resena_model(models.Model):
         return self.fuente
     class Meta:
         db_table = 'resena'
+

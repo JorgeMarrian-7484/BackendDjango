@@ -21,7 +21,7 @@
 <form method="post">
     {% csrf_token %}
     <div class="input-group mt-3 mb-3">
-        <label class="input-group-text">texto</label>
+        <label class="input-group-text">Titulo</label>
         {{ form.texto }}
         <label class="input-group-text">esrb</label>
         {{form.esrb}}
@@ -42,10 +42,13 @@
 
 
 {% if juego %}
+
     <div class="mt-3 mb-3">
         <button onclick="exportar()" class="btn btn-outline-success">
         <i class="bi bi-file-earmark-excel-fill"></i>Exportar a excel</button>
+        <button onclick="pdf()" class="btn btn-outline-success"><i class="bi bi-file-earmark-excel-fill"></i>Exportar a PDF</button>
     </div>
+        
 <div class="table-responsive">
     <table class="table table-bordered table-hover">
         <thead class="table-dark">
@@ -79,14 +82,64 @@
                     </td>
                     <td class="col-2 text-center">
                         <a href="{% url 'editar_titulo' j.id %}" class="btn btn-warning">Editar</a>
-                        <button class="btn btn-danger">Eliminar</button>
+                        <button onclick="eliminar('{{j.id}}')" class="btn btn-danger">Eliminar</button>
                     </td>
                 </tr>
             {% endfor %}            
         </tbody>
     </table>
 </div>
+
+<nav aria-label="Navegación de juegos">
+    <ul class="pagination justify-content-center">
+        {% if juego.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ juego.previous_page_number }}">Anterior</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link">Anterior</a>
+        </li>
+        {% endif %} 
+        {% for num in juego.paginator.page_range %} 
+        {% if juego.number == num %} 
+        <li class="page-item active">
+            <a class="page-link">{{ num }}</a>
+        </li>
+        {% elif num > juego.number|add:'-3' and num < juego.number|add:'3' %}
+        <li class="page-item ">
+            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+        </li>
+        {% endif %} 
+        {% endfor %}
+        
+        {% if juego.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ juego.next_page_number }}">Siguiente</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link">Siguiente</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
 <script>
+        const eliminar = (id) => {
+        Swal.fire({
+            title: "¿Estás seguro de eliminar registro?",
+            text: "No podrás revertir los cambios",
+            icon: "error",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Eliminar"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '/src/titulos/eliminar/' + id
+            }
+        });
+    }
     const exportar = () => {
         const texto = document.getElementById('id_texto').value || '0'
         const esrb = document.getElementById('id_esrb').value || 0
@@ -96,8 +149,18 @@
         const plataforma = document.getElementById('id_plataforma').value || 0
         const resenas = document.getElementById('id_resenas').value || 0
         open(`/src/juegosexcel/${texto}/${esrb}/${desarrolladora}/${editora}/${genero}/${plataforma}/${resenas}`,'_self')
-
     }
+    const pdf = () => {
+        const texto = document.getElementById('id_texto').value || '0'
+        const esrb = document.getElementById('id_esrb').value || 0
+        const desarrolladora = document.getElementById('id_desarrolladora').value || 0
+        const editora = document.getElementById('id_editora').value || 0
+        const genero = document.getElementById('id_genero').value || 0
+        const plataforma = document.getElementById('id_plataforma').value || 0
+        const resenas = document.getElementById('id_resenas').value || 0
+        open(`/src/juegospdf/${texto}/${esrb}/${desarrolladora}/${editora}/${genero}/${plataforma}/${resenas}`,'_self')
+    }
+
 </script>
 
     {% else %}

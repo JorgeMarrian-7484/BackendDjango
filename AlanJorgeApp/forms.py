@@ -178,27 +178,3 @@ class TituloFiltro(forms.Form):
     resenas = forms.ModelChoiceField(queryset=Resena_model.objects.all().order_by('fuente'),
                                     empty_label='Todas las reseñas', required=False, 
                                     widget=forms.Select(attrs={'class':'form-select'}))
-
-
-#Segun se entiende se puede utilizar solo un filtro para hacer todas las funciones de esta pagina de momento
-
-# class EsrbFiltro(forms.Form):
-#     texto = forms.ModelChoiceField(required=False,
-#                                     widget= forms.TextInput(attrs={'class':'form-control'}))
-#     desarrolladora = forms.ModelChoiceField(queryset=Desarrolladora_model.objects.all().order_by('nombre'),
-#                                     empty_label='Todas las desarrolladoras', required=False, 
-#                                     widget=forms.Select(attrs={'class':'form-select'}))
-#     editora = forms.ModelChoiceField(queryset=Editora_model.objects.all().order_by('nombre'),
-#                                     empty_label='Todas las editoras', required=False, 
-#                                     widget=forms.Select(attrs={'class':'form-select'}))
-#     genero = forms.ModelChoiceField(queryset=Genero_model.objects.all().order_by('genero'),
-#                                     empty_label='Todos los generos', required=False, 
-#                                     widget=forms.Select(attrs={'class':'form-select'}))
-#     plataforma = forms.ModelChoiceField(queryset=Plataforma_model.objects.all().order_by('nombre'),
-#                                     empty_label='Todas las plataformas', required=False, 
-#                                     widget=forms.Select(attrs={'class':'form-select'}))
-#     resenas = forms.ModelChoiceField(queryset=Resena_model.objects.all().order_by('fuente'),
-#                                     empty_label='Todas las reseñas', required=False, 
-#                                     widget=forms.Select(attrs={'class':'form-select'}))
-#     titulo = forms.ModelChoiceField(queryset=Titulo_model.objects.all().order_by('titulo'),
-#                                     empty_label='Todos los titulos')

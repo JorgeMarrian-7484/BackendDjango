@@ -32,12 +32,64 @@
                 <td>{{ g.genero }}</td>
                 <td class="col-2 text-center">
                     <a href="{% url 'editar_genero' g.id %}" class="btn btn-warning">Editar</a>
-                    <button class="btn btn-danger">Eliminar</button>
+                    <button onclick="eliminar('{{g.id}}')" class="btn btn-danger">Eliminar</button>
                 </td>
             </tr>
         {% endfor %}            
     </tbody>
 </table>
+
+<nav aria-label="Navegación de géneros">
+    <ul class="pagination justify-content-center">
+        {% if genero.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ genero.previous_page_number }}">Anterior</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link">Anterior</a>
+        </li>
+        {% endif %}
+        {% for num in genero.paginator.page_range %} 
+        {% if genero.number == num %} 
+        <li class="page-item active">
+            <a class="page-link">{{ num }}</a>
+        </li>
+        {% elif num > genero.number|add:'-3' and num < genero.number|add:'3' %}
+        <li class="page-item ">
+            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+        </li>
+        {% endif %} 
+        {% endfor %}
+        
+        {% if genero.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ genero.next_page_number }}">Siguiente</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link">Siguiente</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+<script>
+        const eliminar = (id) => {
+        Swal.fire({
+            title: "¿Estás seguro de eliminar registro?",
+            text: "No podrás revertir los cambios",
+            icon: "error",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Eliminar"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '/src/generos/eliminar/' + id
+            }
+        });
+    }
+</script>
 {% else %}
 <p class="alert alert-warning">No hay Generos registradas</p>
 {% endif %}

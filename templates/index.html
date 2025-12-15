@@ -1,58 +1,261 @@
 <!DOCTYPE html>
 {% load static %}
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tienda de juegos</title>
+    <title>Tienda de Juegos - GameStore</title>
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <script src="{% static 'js/sweetalert2.js' %}"></script>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="{% url 'inicio' %}">
-    <img src="{% static 'img/logo.png' %}" alt="Logo" style="width:40px;" class="rounded-pill">
-    </a>
-    <a class="navbar-brand" href="{% url 'inicio' %}">Tienda de juegos</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-link active" aria-current="page" href="{% url 'inicio' %}">Home</a>
-        <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll">
-          <li class="nav-item">
-              <a class="nav-link" href="{% url 'esrb' %}">ESRB</a>
-          </li>
-          <li class="nav-item">
-              <a class="nav-link" href="{% url 'desarrolladora' %}">Desarrolladoras</a>
-          </li>
-          <li class="nav-item">
-              <a class="nav-link" href="{% url 'editora' %}">Editoras</a>
-          </li>
-          <li class="nav-item">
-              <a class="nav-link" href="{% url 'genero' %}">Géneros</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'plataforma' %}">Plataformas</a>
-          </li>
-          <li>
-            <a class="nav-link" href="{% url 'titulojuego' %}">Juegos</a>
-          </li>
-          <li>
-            <a class="nav-link" href="{% url 'resenas' %}">Reseñas</a>
-          </li>
-        </ul>
-      </div>
+{% if messages %}
+    
+    {% for msj in messages %}
+        <script>
+            Swal.fire('{{ msj }}','','success').then(()=>{
+                window.location.href = '{{ ruta }}'
+            })
+        </script>
+    {% endfor %}
+        
+{% endif %}
+
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'inicio' %}">
+                <img src="{% static 'img/logo.png' %}" alt="Logo" style="width:40px;" class="rounded-pill me-2">
+                GameStore
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'inicio' %}">🏠 Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'esrb' %}">📊 ESRB</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'desarrolladora' %}">🏢 Desarrolladoras</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'editora' %}">📝 Editoras</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'genero' %}">🎭 Géneros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'plataforma' %}">🎮 Plataformas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'titulojuego' %}">🎲 Juegos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'resenas' %}">⭐ Reseñas</a>
+                    </li>
+                    
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <form action="{% url 'logout' %}" method="post">
+                            {% csrf_token %}
+                            <input type="submit" value="Cerrar sesion" class="nav-link">
+                        </form>
+                    </li>
+                    {% elif not user.is_authenticated %}
+                        <a href="{% url 'register' %}" class="btn btn-outline-primary">Registrarse</a>
+                    {% else %}
+                    <li class="nav-item">
+                        <form action="{% url 'login' %}" method="post">
+                            {% csrf_token %}
+                            <input type="submit" value="Iniciar sesion" class="nav-link">
+                        </form>
+                    </li>
+                        
+                    {% endif %}
+                        
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="container">
+        {% block contenido %}
+        <section class="hero-section fade-in">
+            <div class="container">
+                <h1 class="hero-title">🎮 Bienvenido a GameStore '{{user.username}}'</h1>
+                <p class="hero-subtitle">Descubre los mejores videojuegos para todas las plataformas</p>
+                <a href="#juegos-destacados" class="btn btn-light btn-lg">Explorar Catálogo</a>
+            </div>
+        </section>
+        <section id="juegos-destacados" class="py-5">
+            <div class="container">
+                <div class="row mb-4">
+                    <div class="col-12 text-center">
+                        <h2 class="fw-bold text-gradient">🎯 Juegos Destacados</h2>
+                        <p class="text-muted">Los títulos más populares de nuestra tienda</p>
+                    </div>
+                </div>
+                
+                <div class="row g-4">
+                    {% for juego in juegos_destacados %}
+                    <div class="col-md-6 col-lg-4 col-xl-3 fade-in">
+                        <div class="card h-100 game-card">
+                            <!-- PORTADA DEL JUEGO -->
+                            {% if juego.portada %}
+                            <img src="{{ juego.portada.url }}" 
+                                 class="card-img-top" 
+                                 alt="{{ juego.titulo }}"
+                                 style="height: 250px; object-fit: cover;">
+                            {% else %}
+                            <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center text-white"
+                                 style="height: 250px;">
+                                <span>🎮 Sin portada</span>
+                            </div>
+                            {% endif %}
+                            
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title fw-bold">{{ juego.titulo }}</h5>
+                                
+                                <small class="text-muted mb-2">
+                                    {% if juego.desarrolladora %}
+                                        {{ juego.desarrolladora.nombre }}
+                                    {% else %}
+                                        Desarrolladora no especificada
+                                    {% endif %}
+                                </small>
+                                <p class="card-text text-muted flex-grow-1">
+                                    {{ juego.descripcion|truncatewords:15 }}
+                                </p>
+                                
+                                <div class="mt-auto">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="badge 
+                                            {% if 'playstation' in juego.plataforma.nombre.lower %}bg-primary
+                                            {% elif 'xbox' in juego.plataforma.nombre.lower %}bg-success
+                                            {% elif 'nintendo' in juego.plataforma.nombre.lower %}bg-danger
+                                            {% elif 'pc' in juego.plataforma.nombre.lower %}bg-info
+                                            {% else %}bg-secondary{% endif %}">
+                                            {% if juego.plataforma %}
+                                                {{ juego.plataforma.nombre }}
+                                            {% else %}
+                                                Sin plataforma
+                                            {% endif %}
+                                        </span>
+                                        <span class="h5 text-success mb-0 price-tag">${{ juego.precio }}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <small class="text-muted">
+                                            {% if juego.genero %}
+                                                {{ juego.genero.genero }}
+                                            {% else %}
+                                                Sin género
+                                            {% endif %}
+                                        </small>
+                                        <span class="badge bg-warning text-dark">
+                                            {% if juego.esrb %}
+                                                {{ juego.esrb.clasificacion }}
+                                            {% else %}
+                                                Sin ESRB
+                                            {% endif %}
+                                        </span>
+                                    </div>
+                                    <div class="d-grid gap-2">
+                                        <a href="#" class="btn btn-primary btn-sm">
+                                            👁️ Ver Detalles
+                                        </a>
+                                        <button class="btn btn-outline-success btn-sm">
+                                            🛒 Agregar al Carrito
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="col-12">
+                        <div class="no-results">
+                            <div class="alert alert-info text-center">
+                                <h4>🎮 No hay juegos disponibles</h4>
+                                <p class="mb-0">Aún no se han agregado juegos a la tienda.</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% if juegos_destacados %}
+                <div class="row mt-4">
+                    <div class="col-12 text-center">
+                        <a href="{% url 'dashboard' %}" class="btn btn-outline-primary btn-lg">
+                            📚 Ver Estadisticas
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </section>
+        <section class="py-5 bg-light rounded-custom my-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 text-center mb-4">
+                        <div class="p-4">
+                            <h3 class="text-primary">🚀 Lanzamientos</h3>
+                            <p class="text-muted">Los juegos más recientes y próximos lanzamientos</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center mb-4">
+                        <div class="p-4">
+                            <h3 class="text-success">💰 Ofertas</h3>
+                            <p class="text-muted">Descuentos especiales y promociones exclusivas</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center mb-4">
+                        <div class="p-4">
+                            <h3 class="text-warning">⭐ Exclusivos</h3>
+                            <p class="text-muted">Títulos únicos para cada plataforma</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        {% endblock contenido %}
     </div>
-  </div>
-</nav>
 
-<div class="container">
-  {% block contenido %}
-  {% endblock contenido %}
-</div>
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container text-center">
+            <p>&copy; 2024 GameStore. Todos los derechos reservados.</p>
+            <p class="text-muted">🎮 Tu tienda de videojuegos de confianza</p>
+        </div>
+    </footer>
 
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.game-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+
+        // Mensaje de bienvenida
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎮 GameStore cargado correctamente!');
+        });
+    </script>
 </body>
 </html>
